@@ -2,7 +2,7 @@
 
 A robust sample project demonstrating **Kotlin Multiplatform (KMP)** with **Compose Multiplatform**, built using **Clean Architecture** and **MVI (Model-View-Intent)** pattern.
 
-Designed and developed by [Saman Khanbeiki](https://github.com/skhanbeiki).
+Designed and developed by [Moslem Khanbeiki](https://github.com/skhanbeiki).
 
 ## 🚀 Features
 
@@ -129,10 +129,10 @@ Run the following Gradle command:
 
 ## 👤 Author
 
-**Saman Khanbeiki**
+**Moslem Khanbeiki**
 
 -   GitHub: [github.com/skhanbeiki](https://github.com/skhanbeiki)
--   Email: [saman.khanbeiki@gmail.com](mailto:saman.khanbeiki@gmail.com)
+-   Email: [s.khanbeiki@gmail.com](mailto:s.khanbeiki@gmail.com)
 
 ---
 *Built with ❤️ to demonstrate the power of Kotlin Multiplatform.*
