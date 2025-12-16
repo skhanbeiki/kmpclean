@@ -45,6 +45,15 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.coroutines)
         }
+        androidMain.dependencies {
+            implementation(libs.androidx.datastore.preferences)
+        }
+        iosMain.dependencies {
+            // implementation(libs.multiplatform.settings.no.arg) // If we use it, but AyanHooks uses direct implementation
+        }
+        jvmMain.dependencies {
+            implementation(libs.androidx.datastore.preferences) // DataStore works on JVM too
+        }
     }
 }
 

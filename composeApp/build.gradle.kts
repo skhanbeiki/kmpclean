@@ -126,6 +126,119 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    flavorDimensions += "variant"
+
+    val cafebazaar = "Cafebazaar"
+    val myket = "Myket"
+    val playstore = "Playstore"
+    val packageNameBase = "ir.khanbeiki.kmpclean."
+
+    productFlavors {
+        // Water
+        create("water$cafebazaar") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}water"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("water$myket") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}water"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("water$playstore") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}water"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+
+        // Electricity
+        create("electricity$cafebazaar") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}electricity"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("electricity$myket") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}electricity"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("electricity$playstore") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}electricity"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        
+        // Gas
+        create("gas$cafebazaar") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}gas"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("gas$myket") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}gas"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("gas$playstore") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}gas"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+
+        // Phone
+        create("phone$cafebazaar") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}phone"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("phone$myket") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}phone"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("phone$playstore") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}phone"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+
+        // Mobile
+        create("mobile$cafebazaar") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}mobile"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("mobile$myket") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}mobile"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+        create("mobile$playstore") {
+            dimension = "variant"
+            applicationId = "${packageNameBase}mobile"
+            versionCode = 1
+            versionName = "1.0.0"
+        }
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {

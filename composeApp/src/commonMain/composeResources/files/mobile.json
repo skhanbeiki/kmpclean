@@ -1,0 +1,21 @@
+{
+  "colors": {
+    "primary": "0xFF4CAF50",
+    "background": "0xFFE8F5E9",
+    "textPrimary": "0xFF1B5E20"
+  },
+  "strings": {
+    "title": {
+      "fa": "استعلام موبایل",
+      "en": "Mobile Bill Inquiry"
+    },
+    "description": {
+      "fa": "مشاهده و پرداخت قبض موبایل",
+      "en": "View and pay Mobile bill"
+    }
+  },
+  "images": {
+    "logo": "ic_mobile_logo",
+    "background": "ic_mobile_bg"
+  }
+}

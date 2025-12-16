@@ -1,0 +1,21 @@
+{
+  "colors": {
+    "primary": "0xFF2196F3",
+    "background": "0xFFE3F2FD",
+    "textPrimary": "0xFF0D47A1"
+  },
+  "strings": {
+    "title": {
+      "fa": "استعلام قبض آب",
+      "en": "Water Bill Inquiry"
+    },
+    "description": {
+      "fa": "مشاهده و پرداخت قبض آب",
+      "en": "View and pay Water bill"
+    }
+  },
+  "images": {
+    "logo": "ic_water_logo",
+    "background": "ic_water_bg"
+  }
+}
