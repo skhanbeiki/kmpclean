@@ -1,4 +1,4 @@
-# پروژه KmpClean: معماری پاک در Kotlin Multiplatform
+# پروژه KmpClean: معماری Clean در Kotlin Multiplatform
 
 این پروژه یک نمونه پیاده‌سازی حرفه‌ای و مدرن از **Kotlin Multiplatform (KMP)** با استفاده از اصول **Clean Architecture** است. هدف اصلی این پروژه، نمایش چگونگی اشتراک‌گذاری حداکثری کد بین پلتفرم‌های مختلف (Android, iOS, Desktop, Web) در عین حفظ کیفیت، تست‌پذیری و قابلیت توسعه است.
 
