@@ -1,7 +1,7 @@
 package ir.khanbeiki.kmpclean.platform
 
-import ir.khanbeiki.kmpclean.platform.model.MarketName
-import ir.khanbeiki.kmpclean.platform.model.PlatformType
+import ir.khanbeiki.kmpclean.core.common.model.MarketName
+import ir.khanbeiki.kmpclean.core.common.model.PlatformType
 
 object BaseData {
     var platform: PlatformType = PlatformType.Android

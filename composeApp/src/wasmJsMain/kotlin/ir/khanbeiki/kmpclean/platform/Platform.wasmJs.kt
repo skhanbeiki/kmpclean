@@ -1,9 +1,9 @@
 package ir.khanbeiki.kmpclean.platform
 
 import io.ktor.util.Platform
-import ir.khanbeiki.kmpclean.platform.model.MarketName
-import ir.khanbeiki.kmpclean.platform.model.PlatformData
-import ir.khanbeiki.kmpclean.platform.model.PlatformType
+import ir.khanbeiki.kmpclean.core.common.model.MarketName
+import ir.khanbeiki.kmpclean.core.common.model.PlatformData
+import ir.khanbeiki.kmpclean.core.common.model.PlatformType
 
 
 fun wasmPlatform(): PlatformData {

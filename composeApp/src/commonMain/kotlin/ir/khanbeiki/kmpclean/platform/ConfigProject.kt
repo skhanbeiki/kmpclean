@@ -1,10 +1,10 @@
 package ir.khanbeiki.kmpclean.platform
 
-import ir.khanbeiki.kmpclean.platform.model.ConfigData
-import ir.khanbeiki.kmpclean.presentation.ui.theme.AppColors
-import ir.khanbeiki.kmpclean.presentation.ui.theme.AppImages
-import ir.khanbeiki.kmpclean.presentation.ui.theme.AppStrings
-import ir.khanbeiki.kmpclean.presentation.ui.util.loadJsonFile
+import ir.khanbeiki.kmpclean.core.common.model.ConfigData
+import ir.khanbeiki.kmpclean.library.designsystem.theme.AppColors
+import ir.khanbeiki.kmpclean.library.designsystem.theme.AppImages
+import ir.khanbeiki.kmpclean.library.designsystem.theme.AppStrings
+import ir.khanbeiki.kmpclean.library.designsystem.util.loadJsonFile
 import kotlinx.serialization.json.Json
 import androidx.compose.ui.graphics.Color
 

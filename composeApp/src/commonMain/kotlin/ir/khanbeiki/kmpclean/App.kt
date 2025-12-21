@@ -8,14 +8,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.koin.getScreenModel
-import ir.khanbeiki.kmpclean.presentation.home.HomeScreen
+import cafe.adriel.voyager.koin.koinScreenModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
-    // We can't use koinViewModel or getScreenModel here directly because App is not a Screen.
+    // We can't use koinViewModel or koinScreenModel here directly because App is not a Screen.
     // However, we can use Koin's koinInject if we want, or just let Voyager handle it in the Screen.
     // But we need to initialize the config.
     // For simplicity in this structure, we can wrap the Navigator in a component that fetches the VM.
@@ -29,7 +28,7 @@ fun App() {
 
 @Composable
 fun AppContent() {
-    // Note: getScreenModel is for Voyager Screens. For the root App, we might need standard Koin.
+    // Note: koinScreenModel is for Voyager Screens. For the root App, we might need standard Koin.
     // Or we can just use a simple LaunchedEffect to init config if we don't strictly need a ViewModel here.
     // But let's try to follow the pattern.
     

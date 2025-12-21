@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.composeHotReload)
+    // alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinSerialization)
 }
 
@@ -53,6 +53,14 @@ kotlin {
             implementation(project(":core:data"))
             implementation(project(":core:network"))
             implementation(project(":core:common"))
+            implementation(project(":core:base"))
+            implementation(project(":library:designsystem"))
+            implementation(project(":library:navigation"))
+            implementation(project(":feature:home"))
+            implementation(project(":feature:payment"))
+            implementation(project(":feature:inquiry"))
+            implementation(project(":feature:registration"))
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

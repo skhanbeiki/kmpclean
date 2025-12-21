@@ -1,138 +1,96 @@
-# KMP Clean Architecture Sample
+# پروژه KmpClean: معماری پاک در Kotlin Multiplatform
 
-A robust sample project demonstrating **Kotlin Multiplatform (KMP)** with **Compose Multiplatform**, built using **Clean Architecture** and **MVI (Model-View-Intent)** pattern.
+این پروژه یک نمونه پیاده‌سازی حرفه‌ای و مدرن از **Kotlin Multiplatform (KMP)** با استفاده از اصول **Clean Architecture** است. هدف اصلی این پروژه، نمایش چگونگی اشتراک‌گذاری حداکثری کد بین پلتفرم‌های مختلف (Android, iOS, Desktop, Web) در عین حفظ کیفیت، تست‌پذیری و قابلیت توسعه است.
 
-Designed and developed by [Moslem Khanbeiki](https://github.com/skhanbeiki).
+## 🚀 اهداف پروژه
+- **اشتراک‌گذاری منطق تجاری (Business Logic):** بیش از ۹۰٪ کدها در لایه Common نوشته شده‌اند.
+- **رابط کاربری یکپارچه:** استفاده از **Compose Multiplatform** برای داشتن UI یکسان در تمام پلتفرم‌ها.
+- **ساختار ماژولار:** تفکیک دقیق وظایف برای جلوگیری از درهم‌تنیدگی کدها (Decoupling).
 
-## 🚀 Features
+---
 
--   **Multiplatform Support**: Shared logic and UI across Android, iOS, Desktop (JVM), and Web (Wasm).
--   **Clean Architecture**: Strict separation of concerns into Domain, Data, Network, and Presentation layers.
--   **MVI Pattern**: Unidirectional data flow (State, Intent, Effect) for predictable state management.
--   **Modular Design**: Core functionalities are split into independent modules for better scalability.
+## 🏗 ساختار معماری (Clean Architecture)
 
-## 🛠 Tech Stack
-
--   **[Kotlin Multiplatform](https://kotlinlang.org/docs/multiplatform.html)**: The core technology for sharing code.
--   **[Compose Multiplatform](https://www.jetbrains.com/lp/compose-multiplatform/)**: Declarative UI framework shared across platforms.
--   **[Koin](https://insert-koin.io/)**: Pragmatic Dependency Injection framework for Kotlin.
--   **[Voyager](https://voyager.adriel.cafe/)**: A pragmatic navigation library for Compose Multiplatform.
--   **[Ktor](https://ktor.io/)**: Asynchronous HTTP client for multiplatform networking.
--   **[Coroutines & Flow](https://kotlinlang.org/docs/coroutines-overview.html)**: For asynchronous programming and reactive data streams.
-
-## 🏗 Architecture
-
-This project follows the **Clean Architecture** principles to ensure that the business logic is independent of the UI and frameworks.
-
-### Module Structure
+این پروژه از مدل لایه‌بندی استاندارد معماری پاک پیروی می‌کند:
 
 ```mermaid
 graph TD
-    subgraph Presentation
-    App[ComposeApp]
-    end
-    
-    subgraph Core
-    Domain[Core: Domain]
-    Data[Core: Data]
-    Network[Core: Network]
-    Common[Core: Common]
-    end
-
-    App --> Domain
-    App --> Data
-    App --> Network
-    App --> Common
-    
-    Data --> Domain
-    Data --> Network
-    Data --> Common
-    
-    Domain --> Common
-    Network --> Common
+    UI[Presentation Layer / Compose] --> Domain[Domain Layer / UseCases & Models]
+    Data[Data Layer / Repositories & DTOs] --> Domain
+    Domain --> Core[Core Modules / Base Classes & Utils]
 ```
 
--   **Core: Domain**: The heart of the application. Contains **Models**, **Repository Interfaces**, and **Use Cases**. It is purely Kotlin and platform-agnostic.
--   **Core: Data**: Implements the repository interfaces defined in the Domain layer. It handles data operations and coordinates between Network and Domain.
--   **Core: Network**: Manages API configurations and the **Ktor** HTTP client.
--   **Core: Common**: Contains shared utilities and constants used across modules.
--   **ComposeApp (Presentation)**: The entry point. It contains the UI screens, ViewModels, and Navigation logic.
+### ۱. لایه Domain (هسته منطق)
+- مستقل‌ترین لایه پروژه.
+- شامل **Entity**ها، **UseCase**ها و تعریف **Repository**ها (Interface).
+- هیچ وابستگی به کتابخانه‌های اندروید یا فریم‌ورک‌های خارجی ندارد.
 
-### MVI Pattern (Presentation Layer)
+### ۲. لایه Data (پیاده‌سازی داده‌ها)
+- مسئول مدیریت داده‌ها از منابع مختلف (Network, Local Database).
+- پیاده‌سازی Interfaceهای تعریف شده در لایه Domain.
+- تبدیل مدل‌های شبکه (DTO) به مدل‌های Domain.
 
-The Presentation layer utilizes the **Model-View-Intent (MVI)** pattern to manage state effectively.
-
-```mermaid
-stateDiagram-v2
-    [*] --> Intent
-    Intent --> ViewModel : User Action / Event
-    state ViewModel {
-        Process --> Reduce : Update State
-        Process --> SideEffect : Emit Effect
-    }
-    Reduce --> State : New State
-    SideEffect --> Effect : One-time Event
-    State --> UI : Render
-    Effect --> UI : Show Toast / Navigate
-    UI --> Intent : Trigger
-```
-
--   **State**: Immutable data class representing the UI state (e.g., `Loading`, `Success`, `Error`).
--   **Intent**: Represents user actions or events (e.g., `RegisterClicked`, `LoadData`).
--   **Effect**: One-time side effects (e.g., `ShowSnackbar`, `NavigateToScreen`).
-
-## 📂 Project Structure
-
-```text
-kmpclean/
-├── composeApp/                 # Main Application Module (UI & Presentation)
-│   ├── src/commonMain/kotlin/
-│   │   └── .../presentation/   # Feature Screens (Registration, Payment, Inquiry)
-│   │   └── .../di/             # Koin Modules
-├── core/                       # Core Modules
-│   ├── domain/                 # Business Logic (UseCases, Models, Repositories)
-│   ├── data/                   # Data Implementation (Repository Impls)
-│   ├── network/                # Network Client (Ktor)
-│   └── common/                 # Shared Utilities
-└── gradle/                     # Build configuration
-```
-
-## 📱 Features Implemented
-
-The project includes three sample features to demonstrate the architecture:
-
-1.  **Registration**: A screen handling user input, validation via UseCase, and API submission.
-2.  **Payment**: A simulated payment flow using the MVI state machine.
-3.  **Inquiry**: A data fetching scenario to demonstrate network calls and state loading.
-
-## 🏃‍♂️ How to Run
-
-### Android
-Open the project in Android Studio and run the `composeApp` configuration.
-
-### iOS
-1.  Open `iosApp/iosApp.xcodeproj` in Xcode.
-2.  Ensure you have your development team selected.
-3.  Run on a Simulator or Device.
-
-### Desktop (JVM)
-Run the following Gradle command in the terminal:
-```bash
-./gradlew :composeApp:run
-```
-
-### Web (Wasm)
-Run the following Gradle command:
-```bash
-./gradlew :composeApp:wasmJsBrowserDevelopmentRun
-```
-
-## 👤 Author
-
-**Moslem Khanbeiki**
-
--   GitHub: [github.com/skhanbeiki](https://github.com/skhanbeiki)
--   Email: [s.khanbeiki@gmail.com](mailto:s.khanbeiki@gmail.com)
+### ۳. لایه Presentation (رابط کاربری)
+- استفاده از **Compose Multiplatform**.
+- مدیریت وضعیت (State Management) با استفاده از **Voyager ScreenModel** (مشابه ViewModel).
+- تفکیک UI به کامپوننت‌های کوچک و بازیافت‌پذیر در ماژول `designsystem`.
 
 ---
-*Built with ❤️ to demonstrate the power of Kotlin Multiplatform.*
+
+## 📦 ساختار ماژول‌ها
+
+پروژه به صورت کاملاً ماژولار طراحی شده است:
+
+- **`:composeApp`**: نقطه ورود برنامه برای تمام پلتفرم‌ها.
+- **`:feature`**: شامل ماژول‌های مستقل برای هر قابلیت (مانند `home`, `registration`, `inquiry`).
+- **`:core`**: زیرساخت‌های مشترک پروژه:
+    - `:core:network`: تنظیمات Ktor و کلاینت شبکه.
+    - `:core:domain`: کلاس‌های پایه لایه Domain.
+    - `:core:data`: زیرساخت‌های ذخیره‌سازی و داده.
+- **`:library`**: کتابخانه‌های کمکی:
+    - `:library:designsystem`: تم‌ها، رنگ‌ها، فونت‌ها و کامپوننت‌های مشترک UI.
+    - `:library:navigation`: مدیریت متمرکز مسیریابی (Navigation).
+
+---
+
+## 🛠 تکنولوژی‌های مورد استفاده
+
+| تکنولوژی | کاربرد |
+| :--- | :--- |
+| **Kotlin Multiplatform** | اشتراک‌گذاری کد بین پلتفرم‌ها |
+| **Compose Multiplatform** | طراحی رابط کاربری (UI) مشترک |
+| **Koin** | تزریق وابستگی (Dependency Injection) |
+| **Ktor** | ارتباطات شبکه و API |
+| **Voyager** | مدیریت جابجایی بین صفحات (Navigation) |
+| **Kotlinx Serialization** | تبدیل داده‌های JSON |
+| **Coil3** | بارگذاری تصاویر به صورت Multiplatform |
+
+---
+
+## 💎 مزایای این معماری برای کسب‌وکارها
+
+۱. **کاهش هزینه‌ها:** به جای استخدام تیم‌های مجزا برای Android و iOS، یک تیم کوچک می‌تواند هر دو پلتفرم (و حتی وب و دسکتاپ) را توسعه دهد.
+۲. **سرعت در بازار (Time-to-Market):** پیاده‌سازی قابلیت‌های جدید همزمان برای تمام پلتفرم‌ها انجام می‌شود.
+۳. **تست‌پذیری بالا:** به دلیل جدایی لایه‌ها، می‌توان منطق برنامه را بدون نیاز به Emulator یا دستگاه واقعی تست کرد.
+۴. **نگهداری آسان:** باگ‌های منطقی (Logic Bugs) فقط یک‌بار در لایه مشترک اصلاح می‌شوند و در تمام پلتفرم‌ها اعمال می‌گردند.
+
+---
+
+## ⚙️ راهنمای اجرا
+
+برای اجرای پروژه، کافیست از دستورات Gradle استفاده کنید:
+
+- **اجرای نسخه دسکتاپ (JVM):**
+  ```bash
+  ./gradlew :composeApp:run
+  ```
+- **اجرای نسخه وب (JS):**
+  ```bash
+  ./gradlew :composeApp:jsBrowserRun
+  ```
+- **اجرای نسخه اندروید:**
+  از طریق Android Studio دکمه Run را بزنید.
+
+---
+
+طراحی شده با ❤️ برای جامعه توسعه‌دهندگان Kotlin.
