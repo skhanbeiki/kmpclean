@@ -1,6 +1,9 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.io.File
+
+apply(from = "project_configs.gradle.kts")
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,7 +14,51 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
+// --- Code Generation for ProjectConfig ---
+val projectKeyProp = project.findProperty("projectKey")?.toString() ?: "WATER_CAFEBAZAAR"
+
+val generateProjectConfig = tasks.register("generateProjectConfig") {
+    val outputDir = File(project.layout.buildDirectory.asFile.get(), "generated/projectConfig/commonMain/kotlin/ir/khanbeiki/kmpclean/platform/config")
+    outputs.dir(outputDir)
+
+    doLast {
+        val configs = project.extra.get("projectConfigs") as Map<String, Map<String, String>>
+        val config = configs[projectKeyProp] ?: configs["WATER_CAFEBAZAAR"]!!
+
+        val configFile = File(outputDir, "ActualProjectConfig.kt")
+        configFile.parentFile.mkdirs()
+
+        val content = """
+            package ir.khanbeiki.kmpclean.platform.config
+            
+            import androidx.compose.ui.graphics.Color
+            import ir.khanbeiki.kmpclean.core.base.ProjectConfig
+            
+            object ActualProjectConfig : ProjectConfig {
+                override val appName = "${config["appName"]}"
+                override val baseUrl = "${config["baseUrl"]}"
+                override val marketName = "${config["marketName"]}"
+                override val primaryColor = Color(${config["primaryColor"]})
+                override val backgroundColor = Color(${config["backgroundColor"]})
+                override val textPrimaryColor = Color(${config["textPrimaryColor"]})
+                override val titleFa = "${config["titleFa"]}"
+                override val titleEn = "${config["titleEn"]}"
+                override val descriptionFa = "${config["descriptionFa"]}"
+                override val descriptionEn = "${config["descriptionEn"]}"
+                override val logoRes = "${config["logoRes"]}"
+            }
+        """.trimIndent()
+
+        configFile.writeText(content)
+    }
+}
+
 kotlin {
+    // Register generated source set
+    sourceSets.commonMain {
+        kotlin.srcDir(generateProjectConfig)
+    }
+    
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
@@ -137,110 +184,37 @@ android {
 
     flavorDimensions += "variant"
 
-    val cafebazaar = "Cafebazaar"
-    val myket = "Myket"
-    val playstore = "Playstore"
+    val projects = listOf("water", "electricity", "gas", "phone", "mobile")
+    val markets = listOf("Cafebazaar", "Myket", "Playstore")
     val packageNameBase = "ir.khanbeiki.kmpclean."
 
     productFlavors {
-        // Water
-        create("water$cafebazaar") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}water"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("water$myket") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}water"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("water$playstore") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}water"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
+        projects.forEach { p ->
+            markets.forEach { m ->
+                create("$p$m") {
+                    dimension = "variant"
+                    applicationId = "$packageNameBase$p"
+                    versionCode = 1
+                    versionName = "1.0.0"
 
-        // Electricity
-        create("electricity$cafebazaar") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}electricity"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("electricity$myket") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}electricity"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("electricity$playstore") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}electricity"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        
-        // Gas
-        create("gas$cafebazaar") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}gas"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("gas$myket") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}gas"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("gas$playstore") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}gas"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
+                    val key = "${p.uppercase()}_${m.uppercase()}"
+                    val configs = project.extra.get("projectConfigs") as Map<String, Map<String, String>>
+                    val config = configs[key] ?: configs["WATER_CAFEBAZAAR"]!!
 
-        // Phone
-        create("phone$cafebazaar") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}phone"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("phone$myket") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}phone"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("phone$playstore") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}phone"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-
-        // Mobile
-        create("mobile$cafebazaar") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}mobile"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("mobile$myket") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}mobile"
-            versionCode = 1
-            versionName = "1.0.0"
-        }
-        create("mobile$playstore") {
-            dimension = "variant"
-            applicationId = "${packageNameBase}mobile"
-            versionCode = 1
-            versionName = "1.0.0"
+                    buildConfigField("String", "PROJECT_KEY", "\"$key\"")
+                    buildConfigField("String", "APP_NAME", "\"${config["appName"]}\"")
+                    buildConfigField("String", "BASE_URL", "\"${config["baseUrl"]}\"")
+                    buildConfigField("String", "MARKET_NAME", "\"${config["marketName"]}\"")
+                    buildConfigField("String", "PRIMARY_COLOR", "\"${config["primaryColor"]}\"")
+                    buildConfigField("String", "BACKGROUND_COLOR", "\"${config["backgroundColor"]}\"")
+                    buildConfigField("String", "TEXT_PRIMARY_COLOR", "\"${config["textPrimaryColor"]}\"")
+                    buildConfigField("String", "TITLE_FA", "\"${config["titleFa"]}\"")
+                    buildConfigField("String", "TITLE_EN", "\"${config["titleEn"]}\"")
+                    buildConfigField("String", "DESCRIPTION_FA", "\"${config["descriptionFa"]}\"")
+                    buildConfigField("String", "DESCRIPTION_EN", "\"${config["descriptionEn"]}\"")
+                    buildConfigField("String", "LOGO_RES", "\"${config["logoRes"]}\"")
+                }
+            }
         }
     }
 

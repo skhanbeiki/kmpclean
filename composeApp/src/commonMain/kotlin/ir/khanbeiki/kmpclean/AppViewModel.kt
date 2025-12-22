@@ -17,11 +17,9 @@ class AppViewModel(
     val language: StateFlow<AppLanguage?> = _language
 
     init {
-        screenModelScope.launch {
-            configProject.getConfigProject()
-            // Default language for now
-            _language.value = AppLanguage.FA
-            LanguageManager.currentLanguage = AppLanguage.FA
-        }
+        configProject.getConfigProject()
+        // Default language for now
+        _language.value = AppLanguage.FA
+        LanguageManager.currentLanguage = AppLanguage.FA
     }
 }
